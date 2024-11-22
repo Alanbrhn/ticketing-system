@@ -10,7 +10,10 @@
                 @csrf
                 <div class="mb-3">
                     <label for="email" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="your@email.com" autocomplete="off" required>
+                    <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" placeholder="your@email.com" value="{{ old('email') }}" required>
+                    @error('email')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="mb-2">
                     <label for="password" class="form-label">
@@ -20,7 +23,10 @@
                         </span>
                     </label>
                     <div class="input-group input-group-flat">
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Your password" autocomplete="off" required>
+                        <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" placeholder="Your password" required>
+                        @error('password')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                         <span class="input-group-text">
                             <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
