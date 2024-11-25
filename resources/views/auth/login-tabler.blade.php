@@ -1,5 +1,3 @@
-<!-- resources/views/auth/login.blade.php -->
-
 @extends('layout.guest')
 
 @section('content')
@@ -70,5 +68,8 @@
                 </a></div>
             </div>
         </div>
+    </div>
+    <div class="text-center text-secondary mt-3">
+        Don't have an account?<a href="{{ route('register') }}" tabindex="-1"> Register now </a>
     </div>
 @endsection

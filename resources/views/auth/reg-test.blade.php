@@ -1,1 +1,0 @@
-<h>ini test reg</h>
