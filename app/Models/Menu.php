@@ -8,8 +8,23 @@ use Spatie\Permission\Models\Permission;
 class Menu extends Model
 {
     protected $fillable = [
-        'name', 'icon', 'url', 'description', 'is_enabled'
+        'name',
+        'icon',
+        'url',
+        'is_dropdown',
+        'parent_id',
+        'is_active'
     ];
+
+    public function subMenus()
+    {
+        return $this->hasMany(Menu::class, 'parent_id', 'id')->orderBy('id');
+    }
+
+    public function parentMenu()
+    {
+        return $this->belongsTo(Menu::class, 'parent_id', 'id');
+    }
 
     // Relasi many-to-many dengan Permission melalui pivot table 'menu_permissions'
     public function permissions()

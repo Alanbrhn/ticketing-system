@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('icon')->nullable();
-            $table->string('url');
-            $table->text('description')->nullable();
-            $table->boolean('is_enabled')->default(true);
+            $table->string('url')->nullable();
+            $table->boolean('is_dropdown')->default(false);
+            $table->foreignId('parent_id')->nullable()->constrained('menus')->cascadeOnDelete();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         
             // Pastikan tabel menggunakan InnoDB

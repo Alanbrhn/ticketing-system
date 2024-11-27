@@ -15,50 +15,57 @@ class MenuSeeder extends Seeder
                 'name' => 'Dashboard',
                 'icon' => 'icon-dashboard',
                 'url' => '/dashboard',
-                'description' => 'Menu utama dashboard',
-                'is_enabled' => true,
+                'is_dropdown' => false,
+                'is_active' => true,
+                'parent_id' => null,
             ],
             [
                 'name' => 'User Management',
                 'icon' => 'icon-users',
                 'url' => '/user-management',
-                'description' => 'Manage users',
-                'is_enabled' => true,
+                'is_dropdown' => false,
+                'is_active' => true,
+                'parent_id' => null,
             ],
             [
                 'name' => 'Role Management',
                 'icon' => 'icon-roles',
                 'url' => '/role-management',
-                'description' => 'Manage roles',
-                'is_enabled' => true,
+                'is_dropdown' => false,
+                'is_active' => true,
+                'parent_id' => null,
             ],
             [
                 'name' => 'Permission Management',
                 'icon' => 'icon-permissions',
                 'url' => '/permission-management',
-                'description' => 'Manage permissions',
-                'is_enabled' => true,
+                'is_dropdown' => false,
+                'is_active' => true,
+                'parent_id' => null,
+            ],
+            [
+                'name' => 'Settings',
+                'icon' => 'icon-settings',
+                'url' => null,
+                'is_dropdown' => true,
+                'is_active' => true,
+                'parent_id' => null,
             ],
             [
                 'name' => 'Menu Management',
                 'icon' => 'icon-menu',
                 'url' => '/menu-management',
-                'description' => 'Manage menus',
-                'is_enabled' => true,
+                'is_dropdown' => false,
+                'is_active' => true,
+                'parent_id' => 5, // Parent: Settings
             ],
             [
                 'name' => 'Ticketing Management',
                 'icon' => 'icon-ticketing',
                 'url' => '/ticketing-management',
-                'description' => 'Manage tickets',
-                'is_enabled' => true,
-            ],
-            [
-                'name' => 'Approval Management',
-                'icon' => 'icon-approval',
-                'url' => '/approval-management',
-                'description' => 'Manage approvals',
-                'is_enabled' => true,
+                'is_dropdown' => false,
+                'is_active' => true,
+                'parent_id' => 5, // Parent: Settings
             ],
         ];
 
@@ -69,14 +76,15 @@ class MenuSeeder extends Seeder
                 'name' => $menuData['name'],
                 'icon' => $menuData['icon'],
                 'url' => $menuData['url'],
-                'description' => $menuData['description'],
-                'is_enabled' => $menuData['is_enabled'],
+                'is_dropdown' => $menuData['is_dropdown'],
+                'is_active' => $menuData['is_active'],
+                'parent_id' => $menuData['parent_id'],
             ]);
 
-            // Tambahkan permissions CRUD ke menu
+            // Tambahkan permissions CRUD untuk menu
             foreach ($actions as $action) {
                 $permissionName = "{$action}-" . strtolower(str_replace(' ', '-', $menuData['name']));
-                $permission = Permission::where('name', $permissionName)->first();
+                $permission = Permission::firstOrCreate(['name' => $permissionName]); // Pastikan permission ada
                 $menu->permissions()->attach($permission);
             }
         }
