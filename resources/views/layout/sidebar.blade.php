@@ -5,7 +5,7 @@
     </button>
     <h1 class="navbar-brand navbar-brand-autodark">
       <a href=".">
-        <img src="./static/logo.svg" width="110" height="32" alt="Logo" class="navbar-brand-image">
+        <img src="./static/brand-google.svg" width="110" height="32" alt="Logo" class="navbar-brand-image">
       </a>
     </h1>
     <div class="collapse navbar-collapse" id="sidebar-menu">
@@ -15,8 +15,8 @@
                 <a href="{{ $menu['url'] ?: '#' }}" 
                    class="nav-link {{ $menu['is_dropdown'] ? 'dropdown-toggle' : '' }}" 
                    {{ $menu['is_dropdown'] ? 'data-bs-toggle=dropdown' : '' }}>
-                    <i class="{{ $menu['icon'] }}"></i>
-                    <span>{{ $menu['name'] }}</span>
+                   <img src="{{ $menu['FilePath'] ? asset(str_replace('public/', '', $menu['FilePath'])) : asset('default/icon.svg') }}" class="menu-icon" width="24" height="24" style="filter: invert(100%) brightness(100%) grayscale(100%);">
+                   <span>{{ $menu['name'] }}</span>
                 </a>
                 @if ($menu['is_dropdown'] && count($menu['children']) > 0)
                     <ul class="dropdown-menu">

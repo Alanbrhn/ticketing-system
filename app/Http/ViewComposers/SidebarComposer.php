@@ -30,7 +30,8 @@ class SidebarComposer
 
         return $view->with('accessibleMenus', $menuTree);
     }
-
+     
+   
     private function buildMenuTree($menus)
     {
         // Konversi stdClass menjadi array
