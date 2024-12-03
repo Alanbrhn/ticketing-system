@@ -33,6 +33,7 @@ Route::middleware(['auth', CheckMenuAccess::class])->group(function () {
 Route::middleware(['auth', 'verified', CheckMenuAccess::class])->group(function () {
     Route::get('/user-management', [UserManagementController::class, 'index'])->name('user-management.index');
     Route::get('/user-management/{id}', [UserManagementController::class, 'show'])->name('user-management.show');
+    Route::get('/user-management/{id}/data', [UserManagementController::class, 'getUserData'])->name('user-management.getData');
     Route::get('/user-management/create', [UserManagementController::class, 'create'])->name('user-management.create');
     Route::post('/user-management', [UserManagementController::class, 'store'])->name('user-management.store');
     Route::get('/user-management/{id}/edit', [UserManagementController::class, 'edit'])->name('user-management.edit');

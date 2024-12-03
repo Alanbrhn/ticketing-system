@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\View;
 use App\Http\ViewComposers\SidebarComposer;
+use App\Repositories\IMenuRepository;
+use App\Repositories\MenuRepositoryEloquent;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::composer('*', SidebarComposer::class);
+        $this->app->singleton(\App\Services\MenuService::class);
+        $this->app->bind(IMenuRepository::class, MenuRepositoryEloquent::class);
     }
 }

@@ -2,25 +2,31 @@
 
 namespace App\services;
 
+use App\Repositories\IMenuRepository;
 use Illuminate\Support\Facades\DB;
 
 class MenuService
 {
-    public function getAccessibleMenus($userId)
-    {
-        return DB::table('menus')
-        ->join('menu_permissions', 'menus.id', '=', 'menu_permissions.menu_id')
-        ->join('role_has_permissions', 'menu_permissions.permission_id', '=', 'role_has_permissions.permission_id')
-        ->join('model_has_roles', 'role_has_permissions.role_id', '=', 'model_has_roles.role_id')
-        ->leftJoin('icons', 'menus.icon', '=', 'icons.IconName') // Join tabel icons
-        ->where('model_has_roles.model_id', $userId)
-        ->where('menus.is_active', 1) // Pastikan menu aktif
-        ->distinct()
-        ->select('menus.*', 'icons.FilePath') // Tambahkan FilePath dari tabel icons
-        ->get()
-        ->map(function ($menu) {
-            return (object) $menu; // Convert setiap item ke object
-        });
+    protected $menuRepository;
 
+    /**
+     * Konstruktor untuk dependency injection MenuRepository
+     *
+     * @param MenuRepositoryInterface $menuRepository
+     */
+    public function __construct(IMenuRepository $menuRepository)
+    {
+        $this->menuRepository = $menuRepository;
+    }
+
+    /**
+     * Mendapatkan menu yang dapat diakses berdasarkan user ID
+     *
+     * @param int $userId
+     * @return \Illuminate\Support\Collection
+     */
+    public function getAccessibleMenus(int $userId)
+    {
+        return $this->menuRepository->getAccessibleMenus($userId);
     }
 }

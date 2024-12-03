@@ -11,25 +11,43 @@ class CheckMenuAccess
 {
     protected $menuService;
 
+    /**
+     * Konstruktor untuk dependency injection MenuService
+     *
+     * @param MenuService $menuService
+     */
     public function __construct(MenuService $menuService)
     {
         $this->menuService = $menuService;
     }
 
+    /**
+     * Menangani request dan memeriksa akses menu
+     *
+     * @param Request $request
+     * @param Closure $next
+     * @return mixed
+     */
     public function handle(Request $request, Closure $next)
     {
         $user = Auth::user();
 
         if (!$user) {
-            return redirect()->route('login');
+            return redirect()->route('login'); 
         }
 
-        // Ambil menu menggunakan MenuService
-        $menus = $this->menuService->getAccessibleMenus($user->id);
-
-        // Simpan menu ke session
-        $request->session()->put('accessible_menus', $menus);
+        // if (!$request->session()->has('accessible_menus')) {
+        //     $menus = $this->menuService->getAccessibleMenus($user->id);
+        //     $request->session()->put('accessible_menus', $menus);
+        // } else {
+        if (!cache()->has("user_{$user->id}_accessible_menus")) {
+                $menus = $this->menuService->getAccessibleMenus($user->id);
+                cache()->put("user_{$user->id}_accessible_menus", $menus, now()->addMinutes(60));
+        } else {
+            $menus = $request->session()->get('accessible_menus');
+        }
 
         return $next($request);
     }
 }
+
